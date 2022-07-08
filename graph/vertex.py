@@ -15,5 +15,24 @@ class Vertex(object):
     def remove_edge(self, edge):
         self.__edges.remove(edge)
 
+    def get_outbound_edges(self):
+        if not self.directed:
+            return self.__edges
 
+        outbound_edges = []
+        for edge in self.__edges:
+            if edge.start_vertex == self:
+                outbound_edges.append(edge)
 
+        return outbound_edges
+
+    def get_inbound_edges(self):
+        if not self.directed:
+            return self.__edges
+
+        inbound_edges = []
+        for edge in self.__edges:
+            if edge.end_vertex == self:
+                inbound_edges.append(edge)
+
+        return inbound_edges
