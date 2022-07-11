@@ -7,7 +7,4 @@ class Edge(object):
         self.weight = weight
 
     def __str__(self):
-        if self.__directed:
-            return f"{self.start_label} -{self.weight}-> {self.end_label}"
-        else:
-            return f"{self.start_label} <-{self.weight}-> {self.end_label}"
+            return f"{self.start_vertex.label} -{self.weight}-> {self.end_vertex.label}"

@@ -1,5 +1,6 @@
 from errors import VertexAlreadyExists
 
+
 class Vertex(object):
     def __init__(self, label, directed=True):
         self.label = label
@@ -14,6 +15,18 @@ class Vertex(object):
 
     def remove_edge(self, edge):
         self.__edges.remove(edge)
+
+    def get_neighbours(self, vertex):
+
+        neighbours = []
+
+        for edge in vertex.__edges:
+            if edge.end_vertex != vertex:
+                neighbours.append(edge.end_vertex)
+            else:
+                neighbours.append(edge.start_vertex)
+
+        return neighbours
 
     def get_outbound_edges(self):
         if not self.directed:
@@ -36,3 +49,6 @@ class Vertex(object):
                 inbound_edges.append(edge)
 
         return inbound_edges
+
+    def __eq__(self, x):
+        return self.label == x.label

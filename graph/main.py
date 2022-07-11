@@ -30,6 +30,38 @@ if __name__ == '__main__':
         weight = edge.weight
         print(neighbour)
         print(weight)
-    
+
     #graph.display_graph()
 
+    graph1 = Graph()  # Graph(directed=false) for undirected graph
+
+    graph1.add_vertex("A")
+    graph1.add_vertex("B")
+    graph1.add_vertex("C")
+    graph1.add_vertex("D")
+    graph1.add_vertex("E")
+    graph1.add_vertex("F")
+    graph1.add_vertex("G")
+    graph1.add_vertex("H")
+
+    graph1.add_edge("A", "B")
+    graph1.add_edge("B", "D")
+    graph1.add_edge("B", "C")
+    graph1.add_edge("C", "D")
+    graph1.add_edge("C", "E")
+    graph1.add_edge("D", "E")
+    graph1.add_edge("H", "E")
+    graph1.add_edge("G", "H")
+    graph1.add_edge("A", "G")
+    graph1.add_edge("G", "F")
+    graph1.add_edge("F", "E")
+    graph1.add_edge("F", "C")
+
+    print([edge.end_vertex.label for edge in graph1.get_vertex("C").get_outbound_edges()])
+
+    path = graph1.BFS("C")
+
+    path_exists = graph1.if_path_exists('C', 'G')
+    print(path_exists)
+
+    print(path)
