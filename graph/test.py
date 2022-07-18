@@ -37,8 +37,8 @@ def test_graph_constructor_vertices():
     graph1.add_edge("F", "E")
     graph1.add_edge("F", "C")
 
-    for item in graph1.get_vertices().keys():
-        print(item)
+    #for item in graph1.get_vertices().keys():
+        #print(item)
 
     #assert 'A' in graph1.get_vertices()
     assert all(key in graph1.get_vertices() for key in ['A', 'B', 'C', 'D','E', 'F', 'G', 'H'])
@@ -69,8 +69,8 @@ def test_graph_constructor_edges():
     graph1.add_edge("F", "E")
     graph1.add_edge("F", "C")
 
-    for item in graph1.get_edges():
-        print(item)
+    # for item in graph1.get_edges():
+    #     print(item)
 
 def test_vertex_get_neighbours():
     graph1 = Graph()

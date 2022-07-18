@@ -16,12 +16,12 @@ class Vertex(object):
     def remove_edge(self, edge):
         self.__edges.remove(edge)
 
-    def get_neighbours(self, vertex):
+    def get_neighbours(self):
 
         neighbours = []
 
-        for edge in vertex.__edges:
-            if edge.end_vertex != vertex:
+        for edge in self.__edges:
+            if edge.end_vertex != self:
                 neighbours.append(edge.end_vertex)
             else:
                 neighbours.append(edge.start_vertex)

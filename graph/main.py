@@ -28,8 +28,8 @@ if __name__ == '__main__':
     for edge in outbound_edges:
         neighbour = edge.end_vertex
         weight = edge.weight
-        print(neighbour)
-        print(weight)
+        #print(neighbour)
+        #print(weight)
 
     #graph.display_graph()
 
@@ -45,23 +45,49 @@ if __name__ == '__main__':
     graph1.add_vertex("H")
 
     graph1.add_edge("A", "B")
-    graph1.add_edge("B", "D")
+    graph1.add_edge("A", "C")
+    graph1.add_edge("A", "D")
+    graph1.add_edge("A", "E")
     graph1.add_edge("B", "C")
+    graph1.add_edge("B", "G")
     graph1.add_edge("C", "D")
-    graph1.add_edge("C", "E")
+    graph1.add_edge("D", "H")
     graph1.add_edge("D", "E")
-    graph1.add_edge("H", "E")
-    graph1.add_edge("G", "H")
-    graph1.add_edge("A", "G")
-    graph1.add_edge("G", "F")
-    graph1.add_edge("F", "E")
-    graph1.add_edge("F", "C")
+    graph1.add_edge("E", "F")
+    graph1.add_edge("F", "G")
+    graph1.add_edge("F", "H")
+    graph1.add_edge("G", "B")
 
-    print([edge.end_vertex.label for edge in graph1.get_vertex("C").get_outbound_edges()])
+    #print([edge.end_vertex.label for edge in graph1.get_vertex("C").get_outbound_edges()])
 
-    path = graph1.BFS("C")
+    path1 = graph1.bfs_shortest_path("A", "G")
 
     path_exists = graph1.if_path_exists('C', 'G')
-    print(path_exists)
+    #print(path_exists)
 
-    print(path)
+    #print(path1)
+
+    graph2 = Graph(directed=True)
+
+    graph2.add_vertex("1")
+    graph2.add_vertex("2")
+    graph2.add_vertex("3")
+    graph2.add_vertex("4")
+    graph2.add_vertex("5")
+    graph2.add_vertex("0")
+
+    graph2.add_edge("0", "1")
+    graph2.add_edge("2", "0")
+    graph2.add_edge("0", "3")
+    graph2.add_edge("3", "1")
+    graph2.add_edge("5", "1")
+    graph2.add_edge("2", "4")
+    graph2.add_edge("4", "3")
+    graph2.add_edge("4", "5")
+
+
+    sorted_graph = graph2.topological_sort_by_kahn_algo()
+    print(f"Sorted by Khan algo: {sorted_graph}")
+
+    #path2 = graph1.DFS("A")
+    #print(f'DFS: {path2}')
