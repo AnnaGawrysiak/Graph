@@ -85,9 +85,27 @@ if __name__ == '__main__':
     graph2.add_edge("4", "3")
     graph2.add_edge("4", "5")
 
-
     sorted_graph = graph2.topological_sort_by_kahn_algo()
     print(f"Sorted by Khan algo: {sorted_graph}")
+
+    graph3 = Graph(directed=False)
+
+    graph3.add_vertex("A")
+    graph3.add_vertex("B")
+    graph3.add_vertex("C")
+    graph3.add_vertex("D")
+    graph3.add_vertex("E")
+
+    graph3.add_edge("A", "B", 6)
+    graph3.add_edge("A", "D", 1)
+    graph3.add_edge("B", "C", 5)
+    graph3.add_edge("C", "E", 5)
+    graph3.add_edge("E", "D", 1)
+    graph3.add_edge("B", "E", 2)
+    graph3.add_edge("B", "D", 2)
+
+    distance, path = graph3.dijkstra('A', 'C')
+    print(f"Dijkstra path: {path} and distance: {distance}")
 
     #path2 = graph1.DFS("A")
     #print(f'DFS: {path2}')

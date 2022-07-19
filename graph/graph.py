@@ -30,7 +30,7 @@ class Graph(object):
     def add_edge(self, start_label, end_label, weight=1):
         start_vertex = self.get_vertex(start_label)
         end_vertex = self.get_vertex(end_label)
-        edge = Edge(start_vertex, end_vertex, weight, self.__directed)
+        edge = Edge(start_vertex, end_vertex, weight)
         self.__edges.add(edge)
         start_vertex.add_edge(edge)
         end_vertex.add_edge(edge)
@@ -202,8 +202,52 @@ class Graph(object):
     #        detect_a_cycle_in_an_undirected_graph(self)
 #
 
-    # def dijkstra(self, start_label, end_label):
-    #     ...
+    def dijkstra(self, start_label, end_label):
+
+        visited = []
+
+        vertex_distance_prev = {}
+
+        for vertex in self.__vertices:
+            print((float('inf'), None))
+            vertex_distance_prev[vertex.label] = (float('inf'), None)
+
+        print(vertex_distance_prev)
+
+        vertex_distance_prev[start_label] = (0, None)
+
+        print(vertex_distance_prev)
+
+        q = Queue()
+        q.put(start_label)
+
+        while q:
+            current_vertex = self.get_vertex(q.get())
+            visited.append( current_vertex.label)
+            shortest_distance_to_current_vertex = vertex_distance_prev[current_vertex.label][0]
+            neighbours = current_vertex.get_neighbours()
+
+            for neighbour in neighbours:
+                if neighbour not in visited:
+                    q.put(neighbour.label)
+                    current_edge = self.get_edge(current_vertex.label,neighbour.label)
+                    distance = shortest_distance_to_current_vertex + current_edge.weight
+                    prev_distance = vertex_distance_prev[neighbour.label][0]
+                    if distance < prev_distance:
+                        vertex_distance_prev[neighbour.label][0] = distance
+                        vertex_distance_prev[neighbour.label][1] = current_vertex.label
+
+        path = []
+        path.append(end_label)
+
+        while end_label != start_label:
+            end_label = vertex_distance_prev[end_label][2]
+            path.append(end_label)
+
+        distance_to_the_end = vertex_distance_prev[end_label][1]
+
+        return distance_to_the_end, path
+
 
     def topological_sort_by_kahn_algo(self):
 
@@ -225,21 +269,18 @@ class Graph(object):
         for key, value in incoming_degrees.items():
             if value == 0:
                 q.put(key)
+                break
 
 
-        while q:
+        for _ in range(len(self.__vertices)):
             current_node = q.get()
-            print(current_node)
             sorted.append(current_node)
 
-            current_vertex = self.get_vertex(current_node)
-
-            for neighbour in current_vertex.get_neighbours():
-                incoming_degrees[neighbour.label] -= 1
-                # If in-degree becomes zero, add it to queue
-                if incoming_degrees[neighbour.label] == 0:
-                    q.put(neighbour.label)
-
+            for edge in self.__edges:
+                if edge.start_vertex.label == current_node:
+                    incoming_degrees[edge.end_vertex.label] -= 1
+                    if edge.end_vertex.label not in q.queue and incoming_degrees[edge.end_vertex.label] == 0:
+                        q.put(edge.end_vertex.label)
 
         return sorted
 
