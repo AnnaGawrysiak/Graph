@@ -12,15 +12,25 @@ class Graph(object):
         self.__directed = directed
         self.__vertices = {}
         self.__edges = set()
+        self.__directed = directed
 
     def add_vertex(self, label):
         self.__vertices[label] = Vertex(label)
 
     def get_edge(self, start_label, end_label):
 
-        for edge in self.__edges:
-            if edge.start_vertex.label == start_label and edge.end_vertex.label == end_label:
-                return edge
+        if self.__directed:
+            for edge in self.__edges:
+                if edge.start_vertex.label == start_label and edge.end_vertex.label == end_label:
+                    return edge
+        else:
+            for edge in self.__edges:
+                if edge.start_vertex.label == start_label and edge.end_vertex.label == end_label:
+                    return edge
+
+            for edge in self.__edges:
+                if edge.start_vertex.label == end_label and edge.end_vertex.label == start_label:
+                    return edge
 
         return None
 
@@ -205,44 +215,58 @@ class Graph(object):
     def dijkstra(self, start_label, end_label):
 
         visited = []
-
         vertex_distance_prev = {}
 
         for vertex in self.__vertices:
-            print((float('inf'), None))
-            vertex_distance_prev[vertex.label] = (float('inf'), None)
+            vertex_distance_prev[vertex] = [float('inf'), None]
 
-        print(vertex_distance_prev)
+        vertex_distance_prev[start_label] = [0, None]
 
-        vertex_distance_prev[start_label] = (0, None)
+        unvisited = []
+        for vertex in self.__vertices:
+            unvisited.append(vertex)
 
-        print(vertex_distance_prev)
 
-        q = Queue()
-        q.put(start_label)
+        while unvisited:
+            print(vertex_distance_prev)
+            # print('before get')
+            # for q_item in q.queue:
+            #     print(q_item)
+            dist = float('inf')
+            current_vertex = self.get_vertex(start_label)
 
-        while q:
-            current_vertex = self.get_vertex(q.get())
-            visited.append( current_vertex.label)
-            shortest_distance_to_current_vertex = vertex_distance_prev[current_vertex.label][0]
-            neighbours = current_vertex.get_neighbours()
+            for vertex in unvisited:
+                if vertex_distance_prev[vertex][0] < dist:
+                    dist = vertex_distance_prev[vertex][0]
+                    current_vertex = vertex
+
+            print(current_vertex)
+            visited.append(current_vertex)
+            unvisited.remove(current_vertex)
+            shortest_distance_to_current_vertex = vertex_distance_prev[current_vertex][0]
+
+            curr_vertex = self.get_vertex((current_vertex))
+            neighbours = curr_vertex.get_neighbours()
 
             for neighbour in neighbours:
-                if neighbour not in visited:
-                    q.put(neighbour.label)
-                    current_edge = self.get_edge(current_vertex.label,neighbour.label)
-                    distance = shortest_distance_to_current_vertex + current_edge.weight
-                    prev_distance = vertex_distance_prev[neighbour.label][0]
-                    if distance < prev_distance:
-                        vertex_distance_prev[neighbour.label][0] = distance
-                        vertex_distance_prev[neighbour.label][1] = current_vertex.label
+                #print(f"Neighbours: {neighbour.label}")
+                current_edge = self.get_edge(current_vertex, neighbour.label)
+                #print(current_edge)
+                distance = shortest_distance_to_current_vertex + current_edge.weight
+                prev_distance = vertex_distance_prev[neighbour.label][0]
+
+                if distance < prev_distance:
+                    vertex_distance_prev[neighbour.label][0] = distance
+                    vertex_distance_prev[neighbour.label][1] = current_vertex
 
         path = []
         path.append(end_label)
 
         while end_label != start_label:
-            end_label = vertex_distance_prev[end_label][2]
+            end_label = vertex_distance_prev[end_label][1]
             path.append(end_label)
+
+        path.reverse()
 
         distance_to_the_end = vertex_distance_prev[end_label][1]
 
