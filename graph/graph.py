@@ -226,12 +226,8 @@ class Graph(object):
         for vertex in self.__vertices:
             unvisited.append(vertex)
 
-
         while unvisited:
             print(vertex_distance_prev)
-            # print('before get')
-            # for q_item in q.queue:
-            #     print(q_item)
             dist = float('inf')
             current_vertex = self.get_vertex(start_label)
 
@@ -245,13 +241,11 @@ class Graph(object):
             unvisited.remove(current_vertex)
             shortest_distance_to_current_vertex = vertex_distance_prev[current_vertex][0]
 
-            curr_vertex = self.get_vertex((current_vertex))
+            curr_vertex = self.get_vertex(current_vertex)
             neighbours = curr_vertex.get_neighbours()
 
             for neighbour in neighbours:
-                #print(f"Neighbours: {neighbour.label}")
                 current_edge = self.get_edge(current_vertex, neighbour.label)
-                #print(current_edge)
                 distance = shortest_distance_to_current_vertex + current_edge.weight
                 prev_distance = vertex_distance_prev[neighbour.label][0]
 
@@ -259,8 +253,7 @@ class Graph(object):
                     vertex_distance_prev[neighbour.label][0] = distance
                     vertex_distance_prev[neighbour.label][1] = current_vertex
 
-        path = []
-        path.append(end_label)
+        path = [end_label]
 
         while end_label != start_label:
             end_label = vertex_distance_prev[end_label][1]

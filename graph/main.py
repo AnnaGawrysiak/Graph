@@ -99,10 +99,10 @@ if __name__ == '__main__':
     graph3.add_edge("A", "B", 6)
     graph3.add_edge("A", "D", 1)
     graph3.add_edge("B", "C", 5)
-    graph3.add_edge("C", "E", 5)
     graph3.add_edge("E", "D", 1)
     graph3.add_edge("B", "E", 2)
     graph3.add_edge("B", "D", 2)
+    graph3.add_edge("E", "C", 5)
 
     distance, path = graph3.dijkstra('A', 'C')
     print(f"Dijkstra path: {path} and distance: {distance}")
